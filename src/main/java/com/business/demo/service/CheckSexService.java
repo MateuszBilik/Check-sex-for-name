@@ -2,6 +2,7 @@ package com.business.demo.service;
 
 import com.business.demo.Sex;
 import com.business.demo.names_DB.NamesDB;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ import java.util.List;
 
 @Service
 @Slf4j
+@NoArgsConstructor
 public class CheckSexService {
 
-    private final NamesDB namesDB;
+    private NamesDB namesDB;
 
     public CheckSexService(NamesDB namesDB) {
         this.namesDB = namesDB;
@@ -64,6 +66,9 @@ public class CheckSexService {
     }
 
     boolean isWord(String name) {
+        if(name.equals("")){
+            return false;
+        }
         for (int i = 0; i < name.length(); i++) {
             if ((!Character.isLetter(name.charAt(i)))) {
                 log.info(name + " is not name");
