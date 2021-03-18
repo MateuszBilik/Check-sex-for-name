@@ -1,17 +1,21 @@
 package com.business.demo.service;
 
 import com.business.demo.Sex;
+import com.business.demo.names_DB.NamesDB;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.Mockito.when;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
@@ -20,18 +24,24 @@ class CheckSexServiceTest {
 
     private final CheckSexService checkSexService = new CheckSexService();
 
+    @Mock
+    NamesDB namesDB;
+
+
     @Test
-    void whenGivenBadFirstName_checkSexByFirstName_returnInconclusive() {
+    void whenGivenFirstName_checkSexByFirstName_returnSexOnlyForIt() {
         // given
-        String wholeNameAsNumber = "123 Jan Karolina";
-        String wholeNameWithNumber = "Karolina1 Jan Karolina";
-        String wholeNameWithSymbol = "K@rolina Jan Karolina";
+        String wholeName = "Karolina Jan";
+//        String wholeNameWithNumber = "Jan Karolina";
+//        String wholeNameWithSymbol = "Karolina Jan Krzysiek";
+//        when(checkSexService.namesToList(wholeName)).thenReturn(Arrays.asList("Mateusz", "Kuba"));
+        when(namesDB.getSex("Karolina")).thenReturn(false);
 
         //when
-
+        Sex response = checkSexService.checkSexByFirstName(wholeName);
 
         //then
-
+        Assertions.assertEquals(response, Sex.INCONCLUSIVE);
     }
 
     @Test
