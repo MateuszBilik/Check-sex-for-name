@@ -21,5 +21,4 @@ public class NamesService {
     public String getMaleNames() throws FileNotFoundException {
         return namesDB.getMaleNames();
     }
-
 }
