@@ -20,21 +20,21 @@ public class NamesController {
     }
 
     @GetMapping("/names")
-    public String returnNames(@RequestParam(required = false) String type) throws FileNotFoundException {
+    public String returnNames(@RequestParam(required = false) String type) {
         try {
             if (Objects.equals(type, "male")) {
                 log.info("Return male list");
-                return namesService.getFemaleNames();
+                return namesService.getMaleNames();
             } else if (Objects.equals(type, "female")) {
                 log.info("Return female list");
-                return namesService.getMaleNames();
+                return namesService.getFemaleNames();
             } else
                 log.info("Return male and female list");
                 return ("Female: " + namesService.getFemaleNames() +
                         "\nMale: " + namesService.getMaleNames());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            throw e;
+            return "Problem with file";
         }
     }
 }
