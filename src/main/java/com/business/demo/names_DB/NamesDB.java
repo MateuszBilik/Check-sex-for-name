@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 @Data
@@ -38,40 +39,38 @@ public class NamesDB {
 
     public Sex getSex(String inputName) {
         if (isMaleName(inputName)) {
-            log.info(inputName + " is male");
             return Sex.MALE;
         } else if (isFemaleName(inputName)) {
-            log.info(inputName + " is female");
             return Sex.FEMALE;
         } else {
-            log.info(inputName + " is inconclusive");
             return Sex.INCONCLUSIVE;
         }
     }
 
     boolean isFemaleName(String name) {
         try {
-            FileInputStream inputStream = new FileInputStream("src/main/resources/female.txt");
+            InputStreamReader inputStream = new InputStreamReader(getClass().getResourceAsStream("/female.txt"));
             if (isInFile(name, inputStream)) return true;
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
+            log.error("Problem with female.txt");
             e.printStackTrace();
         }
-        //TODO inputstreem close?
         return false;
     }
 
     boolean isMaleName(String name) {
         try {
-            FileInputStream inputStream = new FileInputStream("src/main/resources/male.txt");
+            InputStreamReader inputStream = new InputStreamReader(getClass().getResourceAsStream("/male.txt"));
             if (isInFile(name, inputStream)) return true;
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
+            log.error("Problem with male.txt");
             e.printStackTrace();
         }
         return false;
     }
 
-    boolean isInFile(String name, FileInputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
+    boolean isInFile(String name, InputStreamReader inputStream) {
+        Scanner scanner = new Scanner(inputStream);
         while (scanner.hasNextLine()) {
             if (name.equalsIgnoreCase(scanner.nextLine())) {
                 return true;

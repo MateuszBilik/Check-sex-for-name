@@ -2,55 +2,65 @@ package com.business.demo.service;
 
 import com.business.demo.Sex;
 import com.business.demo.names_DB.NamesDB;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
-
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//@ContextConfiguration
 class CheckSexServiceTest {
 
-    private final CheckSexService checkSexService = new CheckSexService();
-
-    @Mock
-    NamesDB namesDB;
-
+    CheckSexService checkSexService = new CheckSexService(new NamesDB());
 
     @Test
-    void whenGivenFirstName_checkSexByFirstName_returnSexOnlyForIt() {
+    void whenGivenNames_checkSexByFirstName_returnSexOnlyForFirst() {
         // given
-        String wholeName = "Karolina Jan";
-//        String wholeNameWithNumber = "Jan Karolina";
-//        String wholeNameWithSymbol = "Karolina Jan Krzysiek";
-//        when(checkSexService.namesToList(wholeName)).thenReturn(Arrays.asList("Mateusz", "Kuba"));
-        when(namesDB.getSex("Karolina")).thenReturn(false);
+        String femaleName = "Karolina Jan";
+        String maleName = "Jan Karolina Renata";
+        String otherName = "123 Karolina Renata";
+        String emptyName = "";
 
         //when
-        Sex response = checkSexService.checkSexByFirstName(wholeName);
+        Sex responseFemale = checkSexService.checkSexByFirstName(femaleName);
+        Sex responseMale = checkSexService.checkSexByFirstName(maleName);
+        Sex responseOther = checkSexService.checkSexByFirstName(otherName);
+        Sex responseEmpty = checkSexService.checkSexByFirstName(emptyName);
 
         //then
-        Assertions.assertEquals(response, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(responseFemale, Sex.FEMALE);
+        Assertions.assertEquals(responseMale, Sex.MALE);
+        Assertions.assertEquals(responseOther, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(responseEmpty, Sex.INCONCLUSIVE);
     }
 
     @Test
     void checkSexByAllNames() {
         // given
+        String femaleAndMaleNames = "Karolina Jan";
+        String MoreFemaleNames = "Jan Karolina Anna";
+        String MoreMaleNames = "Jan Jan Anna";
+        String ThreeDifferentNames = "123 Jan Renata";
+        String twoFemaleAndOneOfTheOthersNames = "123 Jan Renata Anna";
+        String twoMaleAndOneOfTheOthersNames = "123 Jan Mateusz Anna";
+        String emptyName = "";
 
         //when
+        Sex responseFemaleAndMale = checkSexService.checkSexByAllNames(femaleAndMaleNames);
+        Sex responseMoreFemaleNames = checkSexService.checkSexByAllNames(MoreFemaleNames);
+        Sex responseMoreMaleNames = checkSexService.checkSexByAllNames(MoreMaleNames);
+        Sex responseThreeDifferentNames = checkSexService.checkSexByAllNames(ThreeDifferentNames);
+        Sex responseTwoFemaleAndOneOfTheOthers = checkSexService.checkSexByAllNames(twoFemaleAndOneOfTheOthersNames);
+        Sex responseTwoMaleAndOneOfTheOthers = checkSexService.checkSexByAllNames(twoMaleAndOneOfTheOthersNames);
+        Sex responseEmpty = checkSexService.checkSexByAllNames(emptyName);
 
         //then
+        Assertions.assertEquals(responseFemaleAndMale, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(responseMoreFemaleNames, Sex.FEMALE);
+        Assertions.assertEquals(responseMoreMaleNames, Sex.MALE);
+        Assertions.assertEquals(responseThreeDifferentNames, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(responseTwoFemaleAndOneOfTheOthers, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(responseTwoMaleAndOneOfTheOthers, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(responseEmpty, Sex.INCONCLUSIVE);
     }
 
     @Test

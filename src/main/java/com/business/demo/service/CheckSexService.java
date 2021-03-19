@@ -2,7 +2,6 @@ package com.business.demo.service;
 
 import com.business.demo.Sex;
 import com.business.demo.names_DB.NamesDB;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,6 @@ import java.util.List;
 
 @Service
 @Slf4j
-@NoArgsConstructor
 public class CheckSexService {
 
     private NamesDB namesDB;
@@ -38,12 +36,15 @@ public class CheckSexService {
         for (String name : names) {
             if (isWord(name)) {
                 if (namesDB.getSex(name) == Sex.MALE) {
+                    log.info(name + " is male");
                     maleCount++;
                 } else if (namesDB.getSex(name) == Sex.FEMALE) {
+                    log.info(name + " is female");
                     femaleCount++;
                 }
             } else {
                 otherCount++;
+                log.info(name + " is inconclusive");
             }
         }
         log.info(names.toString());
@@ -62,6 +63,7 @@ public class CheckSexService {
     }
 
     List<String> namesToList(String wholeName) {
+        wholeName = wholeName.trim();
         return Arrays.asList(wholeName.split(" "));
     }
 
