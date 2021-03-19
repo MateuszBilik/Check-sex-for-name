@@ -1,6 +1,7 @@
 package com.business.demo.controller;
 
 import com.business.demo.service.NamesService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 
+@Slf4j
 @RestController
 public class NamesController {
 
@@ -20,13 +22,16 @@ public class NamesController {
     @GetMapping("/names")
     public String returnNames(@RequestParam(required = false) String type) throws FileNotFoundException {
         try {
-            if (Objects.equals(type, "1")) {
+            if (Objects.equals(type, "male")) {
+                log.info("Return male list");
                 return namesService.getFemaleNames();
-            } else if (Objects.equals(type, "2")) {
+            } else if (Objects.equals(type, "female")) {
+                log.info("Return female list");
                 return namesService.getMaleNames();
             } else
-                return ("Female are: " + namesService.getFemaleNames() +
-                        "\nMale are: " + namesService.getMaleNames());
+                log.info("Return male and female list");
+                return ("Female: " + namesService.getFemaleNames() +
+                        "\nMale: " + namesService.getMaleNames());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             throw e;

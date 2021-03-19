@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 public class CheckSexService {
 
-    private final NamesDB namesDB;
+    private NamesDB namesDB;
 
     public CheckSexService(NamesDB namesDB) {
         this.namesDB = namesDB;
@@ -21,7 +21,7 @@ public class CheckSexService {
     public Sex checkSexByFirstName(String wholeName) {
         List<String> names = namesToList(wholeName);
         String mainName = names.get(0);
-        if (checkName(mainName)) {
+        if (isWord(mainName)) {
             return namesDB.getSex(mainName);
         }
         return Sex.INCONCLUSIVE;
@@ -32,19 +32,30 @@ public class CheckSexService {
 
         int femaleCount = 0;
         int maleCount = 0;
+        int otherCount = 0;
         for (String name : names) {
-            if (checkName(name)) {
+            if (isWord(name)) {
                 if (namesDB.getSex(name) == Sex.MALE) {
+                    log.info(name + " is male");
                     maleCount++;
                 } else if (namesDB.getSex(name) == Sex.FEMALE) {
+                    log.info(name + " is female");
                     femaleCount++;
                 }
+            } else {
+                otherCount++;
+                log.info(name + " is inconclusive");
             }
         }
+        log.info(names.toString());
+        log.info("female: " +  femaleCount + ", male: " +  maleCount + ", other: " + otherCount);
+        return chooseSex(femaleCount, maleCount, otherCount);
+    }
 
-        if (femaleCount > maleCount) {
+    Sex chooseSex(int femaleCount, int maleCount, int otherCount) {
+        if (femaleCount > (maleCount + otherCount)) {
             return Sex.FEMALE;
-        } else if (maleCount > femaleCount) {
+        } else if (maleCount > (femaleCount + otherCount)) {
             return Sex.MALE;
         } else {
             return Sex.INCONCLUSIVE;
@@ -52,10 +63,14 @@ public class CheckSexService {
     }
 
     List<String> namesToList(String wholeName) {
+        wholeName = wholeName.trim();
         return Arrays.asList(wholeName.split(" "));
     }
 
-    boolean checkName(String name) {
+    boolean isWord(String name) {
+        if(name.equals("")){
+            return false;
+        }
         for (int i = 0; i < name.length(); i++) {
             if ((!Character.isLetter(name.charAt(i)))) {
                 log.info(name + " is not name");

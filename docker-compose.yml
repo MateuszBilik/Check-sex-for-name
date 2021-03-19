@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+
+  task:
+    image: silenteight/mb
+    container_name: taskSilentEight
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    restart: always
