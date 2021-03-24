@@ -27,10 +27,10 @@ class CheckSexServiceTest {
         Sex responseEmpty = checkSexService.checkSexByFirstName(emptyName);
 
         //then
-        Assertions.assertEquals(responseFemale, Sex.FEMALE);
-        Assertions.assertEquals(responseMale, Sex.MALE);
-        Assertions.assertEquals(responseOther, Sex.INCONCLUSIVE);
-        Assertions.assertEquals(responseEmpty, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(Sex.FEMALE, responseFemale);
+        Assertions.assertEquals(Sex.MALE, responseMale);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseOther);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseEmpty);
     }
 
     @Test
@@ -39,8 +39,8 @@ class CheckSexServiceTest {
         String femaleAndMaleNames = "Karolina Jan";
         String MoreFemaleNames = "Jan Karolina Anna";
         String MoreMaleNames = "Jan Jan Anna";
-        String ThreeDifferentNames = "123 Jan Renata";
-        String twoFemaleAndOneOfTheOthersNames = "123 Jan Renata Anna";
+        String ThreeDifferentNames = "123 Jan Anna";
+        String twoFemaleAndOneOfTheOthersNames = "123 Jan Anna";
         String twoMaleAndOneOfTheOthersNames = "123 Jan Mateusz Anna";
         String emptyName = "";
 
@@ -54,13 +54,13 @@ class CheckSexServiceTest {
         Sex responseEmpty = checkSexService.checkSexByAllNames(emptyName);
 
         //then
-        Assertions.assertEquals(responseFemaleAndMale, Sex.INCONCLUSIVE);
-        Assertions.assertEquals(responseMoreFemaleNames, Sex.FEMALE);
-        Assertions.assertEquals(responseMoreMaleNames, Sex.MALE);
-        Assertions.assertEquals(responseThreeDifferentNames, Sex.INCONCLUSIVE);
-        Assertions.assertEquals(responseTwoFemaleAndOneOfTheOthers, Sex.INCONCLUSIVE);
-        Assertions.assertEquals(responseTwoMaleAndOneOfTheOthers, Sex.INCONCLUSIVE);
-        Assertions.assertEquals(responseEmpty, Sex.INCONCLUSIVE);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseFemaleAndMale);
+        Assertions.assertEquals(Sex.FEMALE, responseMoreFemaleNames);
+        Assertions.assertEquals(Sex.MALE, responseMoreMaleNames);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseThreeDifferentNames);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseTwoFemaleAndOneOfTheOthers);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseTwoMaleAndOneOfTheOthers);
+        Assertions.assertEquals(Sex.INCONCLUSIVE, responseEmpty);
     }
 
     @Test

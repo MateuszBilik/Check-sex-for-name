@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
@@ -15,16 +13,28 @@ import java.util.Scanner;
 @Slf4j
 public class NamesDB {
 
-    public String getFemaleNames () throws FileNotFoundException {
+    public String getFemaleNames() {
+        try {
             Scanner scanner = new Scanner(
-                    new FileInputStream("src/main/resources/female.txt"), "UTF-8");
-        return getNames(scanner);
+                    new InputStreamReader(getClass().getResourceAsStream("/female.txt")));
+            return getNames(scanner);
+        } catch (Exception e) {
+            log.error("Problem with female.txt");
+            e.printStackTrace();
+            return "Problem with female.txt";
+        }
     }
 
-    public String getMaleNames () throws FileNotFoundException {
-        Scanner scanner = new Scanner(
-                new FileInputStream("src/main/resources/male.txt"), "UTF-8");
-        return getNames(scanner);
+    public String getMaleNames() {
+        try {
+            Scanner scanner = new Scanner(
+                    new InputStreamReader(getClass().getResourceAsStream("/male.txt")));
+            return getNames(scanner);
+        } catch (Exception e) {
+            log.error("Problem with male.txt");
+            e.printStackTrace();
+            return "Problem with male.txt";
+        }
     }
 
     String getNames(Scanner scanner) {
@@ -33,7 +43,7 @@ public class NamesDB {
             femaleNames
                     .append(scanner.nextLine())
                     .append(", ");
-            }
+        }
         return femaleNames.toString();
     }
 
@@ -76,7 +86,7 @@ public class NamesDB {
                 return true;
             }
         }
-            scanner.close();
+        scanner.close();
         return false;
     }
 }

@@ -15,13 +15,13 @@ public class CheckSexController {
         this.checkSexService = checkSexService;
     }
 
-    @GetMapping(value = "/check", params = "name")
-    public Sex checkSex (@RequestParam String name) {
-    return checkSexService.checkSexByFirstName(name);
+    @GetMapping(value = "/check", params = "firstNameOnly")
+    public Sex checkSex (@RequestParam String firstNameOnly) {
+    return checkSexService.checkSexByFirstName(firstNameOnly);
     }
 
-    @GetMapping(value = "/check", params = "names")
-    public Sex checkSexForAllNames (@RequestParam String names) {
-        return checkSexService.checkSexByAllNames(names);
+    @GetMapping(value = "/check", params = "allNames")
+    public Sex checkSexForAllNames (@RequestParam String allNames) {
+        return checkSexService.checkSexByAllNames(allNames);
     }
 }
